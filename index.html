@@ -513,6 +513,74 @@
     </div>
   </section>
 
+  <!-- BUILDSCROLL:START -->
+  <section class="scroll-anim" id="scroll-anim" aria-label="Croissant rotiert beim Scrollen">
+    <div class="scroll-anim__sticky">
+      <div class="scroll-anim__caption">
+        <span class="overline" style="color:var(--accent)">Frisch aus dem Ofen</span>
+        <h2 style="margin-top:14px">Slow. Flaky. <em style="color:var(--matcha-dark);font-style:italic">Echt.</em></h2>
+        <p style="margin-top:14px;color:var(--muted)">Scroll, um zu sehen, was 24 Stunden Teigführung anrichten.</p>
+      </div>
+      <img class="scroll-anim__frame" src="assets/scroll/frames-clean/frame-001.webp" alt="Croissant" decoding="async" />
+    </div>
+    <div class="scroll-anim__spacer" aria-hidden="true"></div>
+  </section>
+  <style>
+    .scroll-anim{position:relative;background:var(--bg)}
+    .scroll-anim__spacer{height:260vh;pointer-events:none}
+    .scroll-anim__sticky{
+      position:sticky;top:0;height:100vh;
+      display:grid;place-items:center;z-index:1;
+      background:linear-gradient(180deg,var(--bg) 0%,var(--bg-raised) 100%);
+      overflow:hidden;
+    }
+    .scroll-anim__caption{
+      position:absolute;left:50%;top:14%;transform:translateX(-50%);
+      text-align:center;width:min(620px,86vw);z-index:2;
+    }
+    .scroll-anim__caption h2{font-size:clamp(34px,4.8vw,58px)}
+    .scroll-anim__frame{
+      max-width:min(62vw,720px);max-height:62vh;width:auto;height:auto;
+      object-fit:contain;will-change:contents;
+      filter:drop-shadow(0 40px 70px rgba(15,26,24,.22));
+    }
+    @media (max-width:768px){
+      .scroll-anim__spacer{height:200vh}
+      .scroll-anim__frame{max-width:84vw;max-height:55vh}
+      .scroll-anim__caption{top:8%}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .scroll-anim__spacer{height:auto;min-height:60vh}
+    }
+  </style>
+  <script>
+  (() => {
+    const FRAME_COUNT = 50;
+    const PAD = (n) => String(n).padStart(3,'0');
+    const SRC = (i) => `assets/scroll/frames-clean/frame-${PAD(i+1)}.webp`;
+    const section = document.getElementById('scroll-anim');
+    if (!section) return;
+    const img = section.querySelector('.scroll-anim__frame');
+    // Preload all frames
+    for (let i = 0; i < FRAME_COUNT; i++) { const im = new Image(); im.src = SRC(i); }
+    let current = 0, raf = 0;
+    function update(){
+      const rect = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      if (total <= 0) return;
+      const progress = Math.min(1, Math.max(0, -rect.top / total));
+      const idx = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
+      if (idx !== current){ current = idx; img.src = SRC(idx); }
+    }
+    window.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { update(); raf = 0; });
+    }, { passive: true });
+    update();
+  })();
+  </script>
+  <!-- BUILDSCROLL:END -->
+
   <!-- detail grid -->
   <section class="detail-grid">
     <div class="container">
