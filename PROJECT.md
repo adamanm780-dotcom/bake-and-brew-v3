@@ -36,3 +36,4 @@
 
 ## Updates
 - 2026-05-27: Initial Build mit Türkis/Matcha-Palette, Mobile-responsive, Google-Maps-Embed, echte Reviews (4,8★/26 + 1 Snippet + Link), Hero mit Matcha-Latte zentral, 9 Nano-Banana-Assets, Live deployed auf GitHub Pages
+- 2026-05-27: Scroll-Frame-Animation eingebaut (50 Frames, Croissant rotiert 360°-Front-zu-Profil, Seedance 1 Pro Video + Python-chromakey statt ffmpeg)
